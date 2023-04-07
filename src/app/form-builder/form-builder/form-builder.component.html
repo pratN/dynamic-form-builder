@@ -1,0 +1,54 @@
+<div class="container">
+        <mat-card style="width: 300px; margin-right: 2em; height: 300px; max-height: 300px">
+            <mat-card-header>
+                <mat-card-title>
+                    Add Form Elements
+                </mat-card-title>
+            </mat-card-header>
+            <div style="display: flex; flex-direction: column; justify-content: space-between; padding: 1em; height: 100%">
+                <div style="display: flex; flex-direction: column; gap: 1em">
+                    <button *ngFor="let element of availableElements" mat-raised-button style="justify-content: flex-start" (click)="addFormElement(element.key)">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon" [fontIcon]="element.icon"></mat-icon>
+                        <span style="margin-left: 8px">
+                            {{element.label}}
+                        </span>
+                    </button>
+                </div>
+                <button mat-raised-button color="primary" (click)="save()">
+                   Save & View
+                </button>
+        </div>
+        </mat-card>
+
+        <mat-card style="flex: 1; max-height: 85vh; overflow: auto">
+            <mat-card-header>
+                <mat-form-field style="width:100%" appearance="outline">
+                    <mat-label>Form Title</mat-label>
+                    <input matInput type="text" [(ngModel)]="formConfig.title">
+                </mat-form-field>
+            </mat-card-header>
+            <div
+            cdkDropList
+            [cdkDropListData]="formConfig.elements"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)">
+                <div *ngFor="let item of formConfig.elements; let i = index" cdkDrag class="example-box">
+                    <div style="font-style: italic; padding: 4px">{{item.type}}</div>
+                    <div class="draggable-content">
+                        <div style="flex: 1" [ngSwitch]="item.type">
+                            <ct-text-input *ngSwitchCase="'text-input'" [config]="item.config"></ct-text-input>                       
+                            <ct-checkbox-multiselect *ngSwitchCase="'multi-checkbox'" [config]="item.config"></ct-checkbox-multiselect>                       
+                            <ct-dropdown-select *ngSwitchCase="'dropdown'" [config]="item.config"></ct-dropdown-select>                       
+                        </div>
+                        <div>
+                            <button mat-button color="warn" style="margin-left: 2em" (click)="deleteFormElement(i)"> 
+                                <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete_outline"></mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+            
+        </mat-card>
+</div>
